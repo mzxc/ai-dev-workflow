@@ -17,16 +17,16 @@ description: >
 ## 一、记忆体系结构
 
 ```
-{project-root}/
-└── ai-dev-workflow/                # 工作流根目录
+{project-root(当前项目目录)}/
+└── ai-dev-workflow/                    # 工作流根目录
     ├── ai-memory/
-    │   ├── structure/                   # 工程结构文档（只读参考）
+    │   ├── structure/                  # 工程结构文档（只读参考）
     │   │   ├── ARCHITECTURE.md         # 整体架构：目录结构、模块职责、数据流转、外部依赖
-    │   │   ├── modules/                 # 各业务模块的详细设计（按需创建）
+    │   │   ├── modules/                # 各业务模块的详细设计（按需创建）
     │   │   │   └── {module-name}.md
     │   │   └── TECH_STACK.md           # 技术栈、核心依赖、数据字典速查
     │   │
-    │   ├── changed/                     # 变更记录（只写）
+    │   ├── changed/                    # 变更记录（只写）
     │   │   ├── CHANGELOG.md            # 变更索引：摘要 + 记录文件路径，按时间倒序
     │   │   └── records/                # 详细变更记录（一个需求一个文件）
     │   │       └── YYYY-MM-DD_{feature}.md
