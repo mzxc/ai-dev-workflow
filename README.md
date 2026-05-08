@@ -5,46 +5,66 @@
 ## 核心能力
 
 - **冷启动恢复** — 新对话自动加载项目上下文，无需用户重复说明背景
-- **记忆体系** — 结构化的文件体系，覆盖架构文档、变更记录、纠偏日志等
-- **需求管理** — 子需求拆分、进度跟踪、需求归档、变更流程
-- **纠偏机制** — 记录用户对 AI 的理解偏差校正，跨会话持久化生效
-- **会话结束检查** — 自动清单确保上下文不丢失
-
-## 记忆体系结构
-
-所有工作流文件统一存放在项目根目录的 `ai-dev-workflow/` 下：
-
-```
-{project-root}/
-└── ai-dev-workflow/                # 工作流根目录
-    ├── ai-memory/
-    │   ├── structure/              # 工程结构文档（只读参考）
-    │   │   ├── ARCHITECTURE.md
-    │   │   ├── modules/
-    │   │   └── TECH_STACK.md
-    │   ├── changed/                # 变更记录（只写）
-    │   │   ├── CHANGELOG.md
-    │   │   └── records/
-    │   └── context/               # 会话上下文（频繁读写）
-    │       ├── CURRENT_TASK.md
-    │       ├── DECISIONS.md
-    │       └── TWEAKS.md
-    ├── demand/                     # 需求文档
-    │   └── done/
-    ├── resources/                  # 外部资源、接口文档
-    └── BOOTSTRAP.md               # 冷启动入口
-```
+- **变更即记录** — 每次代码变更完成后立即更新工作流文件，不等会话结束
+- **执行计划** — 复杂需求有专属飞行日志（子任务/检查点/决策日志），跨会话无缝续接
+- **纠偏机制** — 记录用户对 AI 的理解偏差校正，跨会话持久化为硬约束
+- **熵管理** — 持续小增量清理代码和文档，防止技术债自我繁殖
+- **辅助脚本** — 5 个开箱即用的 shell 脚本，覆盖初始化到归档全流程
 
 ## 快速开始
 
-1. 在新项目根目录创建 `ai-dev-workflow/BOOTSTRAP.md`：
-   ```markdown
-   # AI 开发工作流
-   新对话冷启动：请加载 ai-dev-workflow skill，按冷启动流程恢复上下文。
-   当前项目：{项目名} · 技术栈：{简述} · 当前分支：{分支名}
-   ```
-2. 新对话时，AI 会自动加载此 skill 并按冷启动流程恢复上下文
-3. 首次使用会自动初始化 `ai-dev-workflow/` 目录结构
+### 新项目初始化（最简方式）
+
+```bash
+# 复制 init.sh 到项目根目录并运行
+bash ~/.claude/skills/ai-dev-workflow/scripts/init.sh "项目名称" "Java 11 / Spring Boot"
+```
+
+一键生成完整目录结构 + 所有模板文件。
+
+### 手动初始化
+
+1. 创建 `ai-dev-workflow/BOOTSTRAP.md`（≤100行，只作导航地图）
+2. 新对话时告诉 AI：加载 `ai-dev-workflow` skill 并初始化
+
+## 记忆体系结构
+
+```
+{project-root}/
+└── ai-dev-workflow/
+    ├── ai-memory/
+    │   ├── structure/              # 只读参考
+    │   │   ├── ARCHITECTURE.md     # 整体架构
+    │   │   ├── modules/            # 各业务模块详情
+    │   │   └── TECH_STACK.md       # 技术栈速查
+    │   ├── changed/                # 只写
+    │   │   ├── CHANGELOG.md        # 变更摘要索引
+    │   │   └── records/            # 详细变更记录
+    │   └── context/                # 频繁读写
+    │       ├── CURRENT_TASK.md     # 当前任务进度
+    │       ├── DECISIONS.md        # 技术决策 + 品味约束
+    │       └── TWEAKS.md           # 纠偏硬约束（冷启动必读）
+    ├── demand/
+    │   ├── exec-plans/
+    │   │   ├── active/             # 进行中的执行计划
+    │   │   └── completed/          # 已完成归档
+    │   └── done/                   # 已完成需求归档
+    ├── resources/                  # 外部资源、接口文档
+    ├── scripts/                    # 辅助脚本（见下方）
+    └── BOOTSTRAP.md                # 冷启动入口（≤100行）
+```
+
+## 辅助脚本（scripts/）
+
+| 脚本 | 用途 | 用法 |
+|---|---|---|
+| `init.sh` | 新项目一键初始化全部目录+模板 | `bash init.sh "项目名" "技术栈"` |
+| `new-demand.sh` | 创建需求文档 + 更新 CURRENT_TASK.md | `bash new-demand.sh "需求名称"` |
+| `new-exec-plan.sh` | 创建复杂需求执行计划（含检查点/决策日志） | `bash new-exec-plan.sh "需求名" "2026-05-20"` |
+| `new-record.sh` | 代码变更后创建变更记录 + 更新 CHANGELOG | `bash new-record.sh "变更简述"` |
+| `check.sh` | 会话结束前检查工作流文件更新状态 | `bash check.sh` |
+
+> AI 可直接调用这些脚本，也可提示用户运行。
 
 ## 触发场景
 
@@ -52,40 +72,27 @@
 
 - 新对话冷启动（项目存在 `ai-dev-workflow/` 目录）
 - 用户说"继续上次的工作"、"接着做"
-- 用户提到需求实现、子需求拆分
+- 用户提需求实现、bug修复、代码优化、问题排查
 - 需要了解 `CURRENT_TASK.md` / `TWEAKS.md` / `CHANGELOG.md` 等记忆文件
 
 ## 关键文件说明
 
-| 文件 | 用途 |
-|------|------|
-| `CURRENT_TASK.md` | 当前需求进度、阻塞问题、下一步计划（高频更新） |
-| `TWEAKS.md` | AI 理解偏差校正记录，视为硬约束 |
-| `CHANGELOG.md` | 变更摘要索引 |
-| `DECISIONS.md` | 技术决策日志 |
-| `ARCHITECTURE.md` | 整体架构文档 |
-| `TECH_STACK.md` | 技术栈速查 |
+| 文件 | 读写频率 | 用途 |
+|---|---|---|
+| `CURRENT_TASK.md` | 高 | 当前需求进度（**每次变更后立即更新**）|
+| `TWEAKS.md` | 中 | AI 纠偏硬约束（冷启动必读）|
+| `CHANGELOG.md` | 中 | 变更摘要索引（**每次变更后立即追加**）|
+| `DECISIONS.md` | 中 | 技术决策 + 品味约束规则 |
+| `exec-plans/active/` | 中 | 复杂需求的飞行日志 |
+| `ARCHITECTURE.md` | 低 | 整体架构（代码涉及架构时同步更新）|
+| `TECH_STACK.md` | 低 | 技术栈速查 |
 
-## 自动化脚本
+## 核心设计原则
 
-`scripts/` 目录提供辅助脚本：
-
-- `update_task.sh {project-root} {subtask-index}` — 更新 CURRENT_TASK.md 进度
-- `add_changelog.sh {project-root} "{摘要}"` — 追加 CHANGELOG 摘要
-
-## 纠偏机制
-
-用户对 AI 的理解偏差进行纠正后，会自动记录到 `ai-dev-workflow/ai-memory/context/TWEAKS.md`。TWEAKS 中的规则优先级高于 AI 自身推断，确保同类错误不重复出现。
-
-## 会话结束检查
-
-每次会话结束前，AI 会自动检查：
-
-- CURRENT_TASK.md 是否反映最新进度
-- 阻塞问题是否已记录
-- TWEAKS.md 是否有遗漏的纠偏记录
-- CHANGELOG.md 是否更新
-- 需求文档是否已归档
+1. **AI 看不见的东西等于不存在** — 所有决策必须落地为文件
+2. **地图优于手册** — BOOTSTRAP.md ≤100 行，只作导航
+3. **变更即记录** — 完成代码变更 = 代码改完 + 工作流文件更新完
+4. **持续还债** — 小增量清理 >> 集中大重构
 
 ---
 
