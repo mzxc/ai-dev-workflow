@@ -12,42 +12,45 @@
 
 ## 记忆体系结构
 
+所有工作流文件统一存放在项目根目录的 `ai-dev-workflow/` 下：
+
 ```
 {project-root}/
-├── ai-memory/
-│   ├── structure/          # 工程结构文档（只读参考）
-│   │   ├── ARCHITECTURE.md
-│   │   ├── modules/
-│   │   └── TECH_STACK.md
-│   ├── changed/            # 变更记录（只写）
-│   │   ├── CHANGELOG.md
-│   │   └── records/
-│   └── context/           # 会话上下文（频繁读写）
-│       ├── CURRENT_TASK.md
-│       ├── DECISIONS.md
-│       └── TWEAKS.md
-├── demand/                # 需求文档
-│   └── done/
-├── resources/             # 外部资源、接口文档
-└── BOOTSTRAP.md           # 冷启动入口
+└── ai-dev-workflow/                # 工作流根目录
+    ├── ai-memory/
+    │   ├── structure/              # 工程结构文档（只读参考）
+    │   │   ├── ARCHITECTURE.md
+    │   │   ├── modules/
+    │   │   └── TECH_STACK.md
+    │   ├── changed/                # 变更记录（只写）
+    │   │   ├── CHANGELOG.md
+    │   │   └── records/
+    │   └── context/               # 会话上下文（频繁读写）
+    │       ├── CURRENT_TASK.md
+    │       ├── DECISIONS.md
+    │       └── TWEAKS.md
+    ├── demand/                     # 需求文档
+    │   └── done/
+    ├── resources/                  # 外部资源、接口文档
+    └── BOOTSTRAP.md               # 冷启动入口
 ```
 
 ## 快速开始
 
-1. 在新项目根目录创建 `BOOTSTRAP.md`：
+1. 在新项目根目录创建 `ai-dev-workflow/BOOTSTRAP.md`：
    ```markdown
    # AI 开发工作流
    新对话冷启动：请加载 ai-dev-workflow skill，按冷启动流程恢复上下文。
    当前项目：{项目名} · 技术栈：{简述} · 当前分支：{分支名}
    ```
 2. 新对话时，AI 会自动加载此 skill 并按冷启动流程恢复上下文
-3. 首次使用会自动初始化 `ai-memory/` 目录结构
+3. 首次使用会自动初始化 `ai-dev-workflow/` 目录结构
 
 ## 触发场景
 
 此 skill 在以下场景自动触发：
 
-- 新对话冷启动（项目存在 `ai-memory/` 目录）
+- 新对话冷启动（项目存在 `ai-dev-workflow/` 目录）
 - 用户说"继续上次的工作"、"接着做"
 - 用户提到需求实现、子需求拆分
 - 需要了解 `CURRENT_TASK.md` / `TWEAKS.md` / `CHANGELOG.md` 等记忆文件
@@ -72,7 +75,7 @@
 
 ## 纠偏机制
 
-用户对 AI 的理解偏差进行纠正后，会自动记录到 `TWEAKS.md`。TWEAKS 中的规则优先级高于 AI 自身推断，确保同类错误不重复出现。
+用户对 AI 的理解偏差进行纠正后，会自动记录到 `ai-dev-workflow/ai-memory/context/TWEAKS.md`。TWEAKS 中的规则优先级高于 AI 自身推断，确保同类错误不重复出现。
 
 ## 会话结束检查
 
