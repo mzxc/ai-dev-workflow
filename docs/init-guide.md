@@ -28,14 +28,7 @@
 │   ├── exec-plans/active/
 │   ├── exec-plans/completed/
 │   └── done/archive/
-├── resources/
-└── scripts/
-```
-
-可直接运行初始化脚本（macOS / Linux / Git Bash）：
-
-```bash
-bash ai-dev-workflow/scripts/init.sh "项目名" "技术栈简述"
+└── resources/
 ```
 
 ---

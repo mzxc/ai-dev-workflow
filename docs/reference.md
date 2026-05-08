@@ -115,21 +115,6 @@ AI 会复制已有模式——包括坏模式，技术债会自我繁殖。**小
 
 ---
 
-## 辅助脚本（scripts/ 目录）
-
-| 脚本 | 用途 | 用法示例 |
-|---|---|---|
-| `init.sh` | 一键初始化完整目录结构和模板文件 | `bash scripts/init.sh "项目名" "技术栈"` |
-| `new-record.sh` | 创建变更记录文件 + 更新 CHANGELOG | `bash scripts/new-record.sh "优化IN参数SQL"` |
-| `new-demand.sh` | 创建新需求文档 + 更新 CURRENT_TASK.md | `bash scripts/new-demand.sh "批量导入功能"` |
-| `new-exec-plan.sh` | 创建复杂需求执行计划 | `bash scripts/new-exec-plan.sh "需求名" "2026-05-20"` |
-| `check.sh` | 会话结束前检查工作流文件更新状态 | `bash scripts/check.sh` |
-
-**平台支持**：macOS ✅ · Linux ✅ · Windows Git Bash ✅ · Windows WSL ✅ · Windows CMD/PowerShell ❌
-
-> 脚本只是辅助工具，不影响 AI 核心工作流程（AI 直接读写 .md 文件）。
-
----
 
 ## 跨会话记忆原则
 

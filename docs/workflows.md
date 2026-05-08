@@ -28,11 +28,7 @@
 
 > 适用于：子任务超过 3 个、预期跨多天、涉及多个模块的需求。
 
-在 `demand/exec-plans/active/` 下创建 `YYYY-MM-DD_{需求名}.md`，也可运行：
-
-```bash
-bash ai-dev-workflow/scripts/new-exec-plan.sh "需求名" "2026-05-20"
-```
+在 `demand/exec-plans/active/` 下创建 `YYYY-MM-DD_{需求名}.md`：
 
 **执行计划模板**：
 
@@ -100,7 +96,6 @@ bash ai-dev-workflow/scripts/new-exec-plan.sh "需求名" "2026-05-20"
 2. **更新 CURRENT_TASK.md**：更换需求名称，重置进度列表
 3. **如果旧需求未完成** — 在旧 CURRENT_TASK.md 中标记"暂停"，不要直接覆盖
 
-也可运行：`bash ai-dev-workflow/scripts/new-demand.sh "需求名称"`
 
 ---
 
