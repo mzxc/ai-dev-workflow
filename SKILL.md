@@ -17,7 +17,7 @@ description: >
 ## 一、记忆体系结构
 
 ```
-{project-root(当前项目目录)}/
+{project-root}/                         # 当前工程目录
 └── ai-dev-workflow/                    # 工作流根目录
     ├── ai-memory/
     │   ├── structure/                  # 工程结构文档（只读参考）
@@ -82,9 +82,19 @@ description: >
 
 ## 三、新项目初始化
 
+### 步骤 0：确定项目根目录
+
+在创建任何文件之前，**必须先确定正确的项目根目录**，按以下优先级判断：
+
+1. **如果已存在 BOOTSTRAP.md**：项目根目录 = BOOTSTRAP.md 所在目录（用 `dirname $(find . -name BOOTSTRAP.md | head -1)` 定位）
+2. **如果存在 .git/**：项目根目录 = git 仓库根目录（用 `git rev-parse --show-toplevel` 获取）
+3. **以上都不存在**：以当前工作目录作为项目根目录，**但必须先向用户确认**："检测到项目根目录为：{路径}，是否正确？"
+
+> **关键**：所有相对路径（如 `ai-dev-workflow/`）都是相对于项目根目录的。不要假设当前 shell 工作目录就是项目根目录。
+
 如果 `ai-dev-workflow/ai-memory/` 目录不存在，按顺序创建：
 
-1. **创建目录结构**（见第一节的树形结构）
+1. **创建目录结构**（在项目根目录下，见第一节的树形结构）
 2. **创建最小可用文件**（均在 `ai-dev-workflow/` 目录下）：
    - `ai-dev-workflow/ai-memory/context/CURRENT_TASK.md` — 初始状态（见模板）
    - `ai-dev-workflow/ai-memory/context/TWEAKS.md` — 空文件，仅含标题和格式说明
