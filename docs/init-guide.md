@@ -28,7 +28,7 @@
 │   ├── exec-plans/active/
 │   ├── exec-plans/completed/
 │   └── done/archive/
-└── resources/
+└── resources/                  # 外部资源（数据库连接、API 地址、第三方接口文档等）
 ```
 
 ---
@@ -46,6 +46,7 @@
 | `ai-memory/structure/ARCHITECTURE.md` | 从项目实际结构生成 |
 | `ai-memory/structure/TECH_STACK.md` | 从项目依赖生成 |
 | `BOOTSTRAP.md` | 导航地图入口（≤100行）|
+| `resources/README.md` | resources 目录用途说明 + 文件索引 |
 
 ---
 
@@ -72,6 +73,7 @@
 | `ai-memory/changed/CHANGELOG.md` | 变更记录索引 |
 | `demand/` | 需求文档 |
 | `demand/exec-plans/active/` | 进行中的复杂需求执行计划 |
+| `resources/` | 外部资源：数据库连接、API 文档、第三方接口 |
 
 ## 冷启动顺序
 

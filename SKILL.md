@@ -60,7 +60,7 @@ description: >
     │   ├── exec-plans/active/      # 进行中的执行计划
     │   ├── exec-plans/completed/
     │   └── done/
-    ├── resources/
+    ├── resources/                  # 外部资源：数据库连接、API 文档、第三方接口信息等
     └── BOOTSTRAP.md                # 导航地图（≤100行）
 ```
 
@@ -92,7 +92,8 @@ CURRENT_TASK.md 是否存在？
     │       3. 读 TECH_STACK.md
     │       4. 按需读 modules/*.md
     │       5. 检查 exec-plans/active/ 有无进行中计划
-    │       6. 开始实现
+    │       6. 按需读 resources/（数据库、API、第三方接口等配置信息）
+    │       7. 开始实现
 ```
 
 **TWEAKS.md 无论何时都必须最先读，其中「规则」字段是硬约束。**
