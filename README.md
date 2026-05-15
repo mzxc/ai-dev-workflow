@@ -8,24 +8,20 @@
 - **变更即记录** — 每次代码变更完成后立即更新工作流文件，不等会话结束
 - **执行计划** — 复杂需求有专属飞行日志（子任务/检查点/决策日志），跨会话无缝续接
 - **纠偏机制** — 记录用户对 AI 的理解偏差校正，跨会话持久化为硬约束
+- **模块文档** — 业务模块边界/流程/约束有硬触发规则，AI 自动维护，防止重复探索
+- **外部资源管理** — `resources/` 存放数据库连接、API 文档等，AI 在实现时主动读取
 - **熵管理** — 持续小增量清理代码和文档，防止技术债自我繁殖
-- **辅助脚本** — 5 个开箱即用的 shell 脚本，覆盖初始化到归档全流程
+- **Golden Principles** — 在 `DECISIONS.md` 顶部维护机械可强制执行的团队规则
 
 ## 快速开始
 
-### 新项目初始化（最简方式）
+新对话中告诉 AI：
 
-```bash
-# 复制 init.sh 到项目根目录并运行
-bash ~/.claude/skills/ai-dev-workflow/scripts/init.sh "项目名称" "Java 11 / Spring Boot"
+```
+加载 ai-dev-workflow skill，初始化这个项目
 ```
 
-一键生成完整目录结构 + 所有模板文件。
-
-### 手动初始化
-
-1. 创建 `ai-dev-workflow/BOOTSTRAP.md`（≤100行，只作导航地图）
-2. 新对话时告诉 AI：加载 `ai-dev-workflow` skill 并初始化
+AI 会读取 `docs/init-guide.md` 并自动完成完整目录结构和模板文件的创建。
 
 ## 记忆体系结构
 
@@ -35,36 +31,23 @@ bash ~/.claude/skills/ai-dev-workflow/scripts/init.sh "项目名称" "Java 11 / 
     ├── ai-memory/
     │   ├── structure/              # 只读参考
     │   │   ├── ARCHITECTURE.md     # 整体架构
-    │   │   ├── modules/            # 各业务模块详情
+    │   │   ├── modules/            # 各业务模块详情（有硬触发规则）
     │   │   └── TECH_STACK.md       # 技术栈速查
     │   ├── changed/                # 只写
     │   │   ├── CHANGELOG.md        # 变更摘要索引
     │   │   └── records/            # 详细变更记录
     │   └── context/                # 频繁读写
-    │       ├── CURRENT_TASK.md     # 当前任务进度
-    │       ├── DECISIONS.md        # 技术决策 + 品味约束
+    │       ├── CURRENT_TASK.md     # 当前任务进度 + 断点快照
+    │       ├── DECISIONS.md        # 技术决策 + Golden Principles
     │       └── TWEAKS.md           # 纠偏硬约束（冷启动必读）
     ├── demand/
     │   ├── exec-plans/
     │   │   ├── active/             # 进行中的执行计划
     │   │   └── completed/          # 已完成归档
     │   └── done/                   # 已完成需求归档
-    ├── resources/                  # 外部资源、接口文档
-    ├── scripts/                    # 辅助脚本（见下方）
+    ├── resources/                  # 数据库连接、API 文档、第三方接口信息
     └── BOOTSTRAP.md                # 冷启动入口（≤100行）
 ```
-
-## 辅助脚本（scripts/）
-
-| 脚本 | 用途 | 用法 |
-|---|---|---|
-| `init.sh` | 新项目一键初始化全部目录+模板 | `bash init.sh "项目名" "技术栈"` |
-| `new-demand.sh` | 创建需求文档 + 更新 CURRENT_TASK.md | `bash new-demand.sh "需求名称"` |
-| `new-exec-plan.sh` | 创建复杂需求执行计划（含检查点/决策日志） | `bash new-exec-plan.sh "需求名" "2026-05-20"` |
-| `new-record.sh` | 代码变更后创建变更记录 + 更新 CHANGELOG | `bash new-record.sh "变更简述"` |
-| `check.sh` | 会话结束前检查工作流文件更新状态 | `bash check.sh` |
-
-> AI 可直接调用这些脚本，也可提示用户运行。
 
 ## 触发场景
 
@@ -79,11 +62,13 @@ bash ~/.claude/skills/ai-dev-workflow/scripts/init.sh "项目名称" "Java 11 / 
 
 | 文件 | 读写频率 | 用途 |
 |---|---|---|
-| `CURRENT_TASK.md` | 高 | 当前需求进度（**每次变更后立即更新**）|
+| `CURRENT_TASK.md` | 高 | 当前需求进度 + 断点快照（**每次变更后立即更新**）|
 | `TWEAKS.md` | 中 | AI 纠偏硬约束（冷启动必读）|
 | `CHANGELOG.md` | 中 | 变更摘要索引（**每次变更后立即追加**）|
-| `DECISIONS.md` | 中 | 技术决策 + 品味约束规则 |
+| `DECISIONS.md` | 中 | 技术决策 + Golden Principles |
+| `modules/*.md` | 中 | 业务模块详设（满足硬触发条件时更新）|
 | `exec-plans/active/` | 中 | 复杂需求的飞行日志 |
+| `resources/` | 低-中 | 外部服务信息（实现涉及外部依赖时读取）|
 | `ARCHITECTURE.md` | 低 | 整体架构（代码涉及架构时同步更新）|
 | `TECH_STACK.md` | 低 | 技术栈速查 |
 
@@ -92,7 +77,8 @@ bash ~/.claude/skills/ai-dev-workflow/scripts/init.sh "项目名称" "Java 11 / 
 1. **AI 看不见的东西等于不存在** — 所有决策必须落地为文件
 2. **地图优于手册** — BOOTSTRAP.md ≤100 行，只作导航
 3. **变更即记录** — 完成代码变更 = 代码改完 + 工作流文件更新完
-4. **持续还债** — 小增量清理 >> 集中大重构
+4. **遇难即补环境** — 卡住的第一反应是补文档，而不是重试
+5. **持续还债** — 小增量清理 >> 集中大重构
 
 ---
 

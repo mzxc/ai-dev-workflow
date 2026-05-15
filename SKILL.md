@@ -71,6 +71,7 @@ description: >
 | `CHANGELOG.md` | **每次代码变更完成后立即追加** |
 | `DECISIONS.md` | 有重大技术选型或品味规则时 |
 | `ARCHITECTURE.md` | 架构变更时同步更新 |
+| `modules/*.md` | 满足硬触发条件时（见 `docs/workflows.md` § 4.8）|
 
 ---
 
@@ -140,6 +141,7 @@ CURRENT_TASK.md 是否存在？
 - [ ] **TWEAKS.md** 本次会话中用户是否纠正过 AI？是否已记录？
 - [ ] **DECISIONS.md** 是否有技术选型或品味约束遗漏？
 - [ ] **ARCHITECTURE.md** 是否因本次变更需要更新？
+- [ ] **modules/*.md** 本次是否命中模块文档硬触发条件？若命中，是否已更新？
 - [ ] **执行计划** 是否更新了进度检查点？
 - [ ] **需求文档** 已完成的需求是否已归档到 `demand/done/`？
 
