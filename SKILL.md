@@ -77,18 +77,20 @@ CURRENT_TASK.md 是否存在？
 ├── 否 → 读 docs/init-guide.md，按步骤初始化，完成后回到此流程
 └── 是 → 续接项目：
     ├── 第一步（必须）：读 TWEAKS.md —— 其中「规则」字段是硬约束，不得跳过
-    ├── 第二步：读 CURRENT_TASK.md
+    ├── 第二步（必须）：读 docs/reference.md 第一节「核心执行约束」—— 每次工作前默认激活，不得跳过
+    ├── 第三步（必须）：读 DECISIONS.md —— Golden Principles 是所有代码变更的硬约束
+    ├── 第四步：读 CURRENT_TASK.md
     │   ├── 有进行中任务 → 快速续接：
     │   │   1. 读 CHANGELOG.md 最近 3 条（了解近期上下文）
     │   │   2. 读 exec-plan 最新检查点（若 CURRENT_TASK 有引用）
     │   │   3. 开工
-    │   └── 无进行中任务 → 完整冷启动：
-    │       1. 读 ARCHITECTURE.md
-    │       2. 读 TECH_STACK.md
-    │       3. 按需读 modules/*.md
-    │       4. 检查 exec-plans/active/ 有无进行中计划
-    │       5. 按需读 resources/（外部服务、接口配置）
-    │       6. 开始实现
+    └── 无进行中任务 → 完整冷启动：
+        1. 读 ARCHITECTURE.md
+        2. 读 TECH_STACK.md
+        3. 按需读 modules/*.md
+        4. 检查 exec-plans/active/ 有无进行中计划
+        5. 列出 resources/ 目录内容；如有文件则逐一读取（外部服务连接、API 文档、第三方接口规范等关键上下文，不得跳过）
+        6. 开始实现
 ```
 
 > **遇到困难时**：不是重试，而是问"什么文档/工具/信息缺失导致我卡住？"——写进仓库，再继续。详见 `docs/workflows.md` § 4.7。
@@ -102,7 +104,7 @@ CURRENT_TASK.md 是否存在？
 | 全新项目初始化 | `docs/init-guide.md` |
 | 实现需求 / 修复 / 重构 | `docs/workflows.md` |
 | 处理用户纠正 / 补充隐含规则 | `docs/tweaks-guide.md` |
-| 查阅执行规则 / 模板 | `docs/reference.md` |
+| 查阅模板 / 判断标准（第二节起） | `docs/reference.md` |
 
 ---
 

@@ -113,6 +113,7 @@ ai-dev-workflow/
 2. 读 `CURRENT_TASK.md`
 3. 按需读 `ARCHITECTURE.md` / `TECH_STACK.md`
 4. 检查 `demand/exec-plans/active/` 是否有进行中计划
+5. 列出 `resources/` 目录内容；如有文件则逐一读取（外部服务连接、API 文档等，不得跳过）
 ```
 
 **BOOTSTRAP.md 必须保持 ≤100 行。超出时立即精简，不得扩充。**
