@@ -126,8 +126,6 @@
 ---
 
 ## 八、模块文档模板（modules/{module-name}.md）
-
-```markdown
 # 模块：{module-name}
 
 **最近更新**: YYYY-MM-DD
@@ -160,3 +158,19 @@
 - 影响范围：
 - 回滚关注点：
 ```
+
+---
+
+## 九、CLAUDE.md 自动钩子模板
+
+> 初始化时写入项目根目录 `CLAUDE.md` 末尾。若钩子丢失或被误删，重新追加此内容。
+
+```markdown
+## AI 开发工作流自动钩子
+
+如果当前项目根目录存在 `ai-dev-workflow/` 文件夹，则：
+1. 自动加载 `ai-dev-workflow` skill
+2. 按 skill 中的冷启动流程恢复项目上下文，不得跳过
+3. 不要等用户提醒，检测到目录即执行
+```
+
