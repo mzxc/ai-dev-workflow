@@ -138,6 +138,7 @@ ai-dev-workflow/
 1. 自动加载 `ai-dev-workflow` skill
 2. 按 skill 中的冷启动流程恢复项目上下文，不得跳过
 3. 不要等用户提醒，检测到目录即执行
+4. 每次任务完成后，自动更新 `ai-dev-workflow` 中的相关文档
 ```
 
 **验证**：追加完成后，确认 CLAUDE.md 末尾包含上述内容，且未破坏原有内容。
