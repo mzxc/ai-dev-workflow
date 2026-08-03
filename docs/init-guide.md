@@ -142,6 +142,9 @@ ai-dev-workflow/
 2. 按 skill 中的冷启动流程恢复项目上下文，不得跳过
 3. 不要等用户提醒，检测到目录即执行
 4. 每次任务完成后，自动更新 `ai-dev-workflow` 中的相关文档
+5. 新任务开始前, 检索必要的索引文件, 如: TWEAKS DECISIONS ARCHITECTURE 等重要资料
+6. 如需访问外部资源, 如数据库和相关文档, 优先检索 resources README
+7. ai-dev-workflow 为当前工程人机总记忆, 一切项目经验&记忆均在此文件夹记录
 ```
 
 **验证**：追加完成后，确认 CLAUDE.md 末尾包含上述内容，且未破坏原有内容。
