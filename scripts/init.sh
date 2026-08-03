@@ -29,8 +29,7 @@ mkdir -p \
   "$WF/demand/exec-plans/active" \
   "$WF/demand/exec-plans/completed" \
   "$WF/demand/done/archive" \
-  "$WF/resources" \
-  "$WF/scripts"
+  "$WF/resources"
 
 # ── BOOTSTRAP.md ──────────────────────────────────────────────────────────────
 cat > "$WF/BOOTSTRAP.md" << EOF
@@ -46,21 +45,26 @@ cat > "$WF/BOOTSTRAP.md" << EOF
 
 | 文件 | 用途 |
 |---|---|
-| \`ai-memory/context/CURRENT_TASK.md\` | 当前任务状态、进度、下一步 |
 | \`ai-memory/context/TWEAKS.md\` | **硬约束规则**（冷启动必读）|
-| \`ai-memory/context/DECISIONS.md\` | 技术决策记录、品味约束 |
-| \`ai-memory/structure/ARCHITECTURE.md\` | 工程架构全貌 |
+| \`ai-memory/context/DECISIONS.md\` | 技术决策 + Golden Principles |
+| \`ai-memory/context/CURRENT_TASK.md\` | 当前任务状态、进度、断点快照 |
+| \`ai-memory/structure/ARCHITECTURE.md\` | 工程架构全貌 + 模块索引 |
 | \`ai-memory/structure/TECH_STACK.md\` | 技术栈速查 |
+| \`ai-memory/structure/modules/\` | 各业务模块详细设计 |
 | \`ai-memory/changed/CHANGELOG.md\` | 变更记录索引 |
 | \`demand/\` | 需求文档 |
 | \`demand/exec-plans/active/\` | 进行中的复杂需求执行计划 |
+| \`resources/\` | 外部资源：数据库连接、API 文档、第三方接口 |
 
 ## 冷启动顺序
 
 1. 读 \`TWEAKS.md\`（硬约束，必须最先读）
-2. 读 \`CURRENT_TASK.md\`（当前状态）
-3. 按需读 \`ARCHITECTURE.md\` / \`TECH_STACK.md\`
-4. 检查 \`demand/exec-plans/active/\` 是否有进行中计划
+2. 读 \`DECISIONS.md\`（Golden Principles 是代码变更的硬约束）
+3. 读 \`CURRENT_TASK.md\`（当前状态，判断是否有进行中任务）
+4. 有任务 → 读 \`CHANGELOG.md\` 最近 3 条 → 开工
+5. 无任务 → 读 \`ARCHITECTURE.md\` / \`TECH_STACK.md\` → 按需读 \`modules/*.md\`
+6. 检查 \`demand/exec-plans/active/\` 是否有进行中计划
+7. 列出 \`resources/\` 目录内容；如有文件则逐一读取（外部服务连接、API 文档等，不得跳过）
 EOF
 
 # ── CURRENT_TASK.md ───────────────────────────────────────────────────────────
@@ -159,11 +163,19 @@ if [ ! -f "$WF/ai-memory/structure/ARCHITECTURE.md" ]; then
 
 （待填写）
 
-## 三、数据流转
+## 三、模块索引
+
+> 与 \`modules/*.md\` 保持同步。每次新增/删除模块文档时，必须同步更新此表。
+
+| 模块 | 文档路径 | 职责 | 最近更新 |
+|------|----------|------|----------|
+| （示例）| \`modules/example.md\` | — | $TODAY |
+
+## 四、数据流转
 
 （待填写）
 
-## 四、外部依赖服务
+## 五、外部依赖服务
 
 （待填写）
 EOF
@@ -181,6 +193,28 @@ if [ ! -f "$WF/ai-memory/structure/TECH_STACK.md" ]; then
 | 分类 | 框架/库 | 版本 |
 |---|---|---|
 | （待填写）| — | — |
+EOF
+fi
+
+# ── resources/README.md ──────────────────────────────────────────────────────
+if [ ! -f "$WF/resources/README.md" ]; then
+  cat > "$WF/resources/README.md" << EOF
+# 外部资源索引
+
+> 存放数据库连接信息、API 文档、第三方接口规范等外部依赖的关键上下文。
+> AI 在实现涉及外部服务调用时，必须先读取此目录下的相关文件。
+
+## 已有资源
+
+| 文件 | 描述 | 最近更新 |
+|------|------|----------|
+| （待添加）| — | — |
+
+## 使用说明
+
+- 每个外部服务一个独立文件，文件名使用 \`{服务名}.md\` 格式
+- 内容应包含：连接信息、接口列表、认证方式、注意事项
+- 新增外部依赖时及时补充，避免信息丢失
 EOF
 fi
 

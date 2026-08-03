@@ -97,11 +97,12 @@ ai-dev-workflow/
 
 | 文件 | 用途 |
 |---|---|
-| `ai-memory/context/CURRENT_TASK.md` | 当前任务状态、进度、断点快照 |
 | `ai-memory/context/TWEAKS.md` | **硬约束规则**（冷启动必读）|
 | `ai-memory/context/DECISIONS.md` | 技术决策、Golden Principles |
-| `ai-memory/structure/ARCHITECTURE.md` | 工程架构全貌 |
+| `ai-memory/context/CURRENT_TASK.md` | 当前任务状态、进度、断点快照 |
+| `ai-memory/structure/ARCHITECTURE.md` | 工程架构全貌 + 模块索引 |
 | `ai-memory/structure/TECH_STACK.md` | 技术栈速查 |
+| `ai-memory/structure/modules/` | 各业务模块详细设计 |
 | `ai-memory/changed/CHANGELOG.md` | 变更记录索引 |
 | `demand/` | 需求文档 |
 | `demand/exec-plans/active/` | 进行中的执行计划 |
@@ -109,11 +110,13 @@ ai-dev-workflow/
 
 ## 冷启动顺序
 
-1. 读 `TWEAKS.md`（必须最先读）
-2. 读 `CURRENT_TASK.md`
-3. 按需读 `ARCHITECTURE.md` / `TECH_STACK.md`
-4. 检查 `demand/exec-plans/active/` 是否有进行中计划
-5. 列出 `resources/` 目录内容；如有文件则逐一读取（外部服务连接、API 文档等，不得跳过）
+1. 读 `TWEAKS.md`（硬约束，必须最先读）
+2. 读 `DECISIONS.md`（Golden Principles 是代码变更的硬约束）
+3. 读 `CURRENT_TASK.md`（判断是否有进行中任务）
+4. 有任务 → 读 `CHANGELOG.md` 最近 3 条 → 开工
+5. 无任务 → 读 `ARCHITECTURE.md` / `TECH_STACK.md` → 按需读 `modules/*.md`
+6. 检查 `demand/exec-plans/active/` 是否有进行中计划
+7. 列出 `resources/` 目录内容；如有文件则逐一读取（外部服务连接、API 文档等，不得跳过）
 ```
 
 **BOOTSTRAP.md 必须保持 ≤100 行。超出时立即精简，不得扩充。**
