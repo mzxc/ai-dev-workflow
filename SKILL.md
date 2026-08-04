@@ -139,3 +139,21 @@ CURRENT_TASK.md 是否存在？
 - [ ] 执行计划检查点已更新？
 - [ ] 完成的需求已归档到 `demand/done/`？
 
+---
+
+## 六、CodeGraph 代码索引初始化
+
+**目的**：建立代码知识图谱索引后，AI 可用 `codegraph_explore` 一次调用获取相关符号的源码与调用链，替代 grep + Read 循环，提升代码理解效率。
+
+**触发条件**（**全部**满足才执行，缺一即跳过）：
+1. 当前 shell 中 `codegraph` 命令可用（`command -v codegraph` 成功）
+2. 项目根目录不存在 `.codegraph/` 目录（尚未初始化）
+
+**执行**：在项目根目录运行 `codegraph init`。
+
+**注意**：
+- 初始化耗时取决于代码库规模；若 Bash 工具默认超时（120s），改用后台运行或加大 timeout
+- 索引建立后立即生效，无需重启会话
+- `codegraph init` 失败不阻塞工作流，记录后继续，可稍后手动重试
+- 索引建立后，日常代码查询优先使用 CodeGraph（`codegraph_explore`），而非 grep/find
+

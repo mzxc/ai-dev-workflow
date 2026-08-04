@@ -218,6 +218,17 @@ if [ ! -f "$WF/resources/README.md" ]; then
 EOF
 fi
 
+# ── CodeGraph 索引（可选）───────────────────────────────────────────────────
+# 条件：codegraph 命令可用 && 项目根目录尚无 .codegraph/
+if command -v codegraph >/dev/null 2>&1 && [ ! -d "$ROOT/.codegraph" ]; then
+  echo "🔍 检测到 codegraph 命令，正在初始化代码索引..."
+  if codegraph init; then
+    echo "✅ CodeGraph 索引已创建：$ROOT/.codegraph/"
+  else
+    echo "⚠️  codegraph init 失败（不影响本工作流），可稍后在项目根目录手动运行 codegraph init"
+  fi
+fi
+
 echo "✅ 初始化完成！目录结构："
 find "$WF" -type f | sort | sed "s|$ROOT/||"
 echo ""

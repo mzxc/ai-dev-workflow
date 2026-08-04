@@ -45,10 +45,10 @@ ai-dev-workflow/
 | `ai-memory/context/TWEAKS.md` | 仅含标题和格式注释（见下方模板）|
 | `ai-memory/context/DECISIONS.md` | 仅含标题，顶部预留 `## Golden Principles` 专区 |
 | `ai-memory/changed/CHANGELOG.md` | 仅含标题和格式说明 |
-| `ai-memory/structure/ARCHITECTURE.md` | 扫描项目实际目录结构生成（见步骤 3）|
-| `ai-memory/structure/TECH_STACK.md` | 读取项目依赖文件生成（见步骤 3）|
+| `ai-memory/structure/ARCHITECTURE.md` | 扫描项目实际目录结构生成（见步骤 4）|
+| `ai-memory/structure/TECH_STACK.md` | 读取项目依赖文件生成（见步骤 4）|
 | `resources/README.md` | 说明此目录用途，列出已有文件索引 |
-| `BOOTSTRAP.md` | 用步骤 4 的模板生成 |
+| `BOOTSTRAP.md` | 用步骤 5 的模板生成 |
 
 **TWEAKS.md 初始内容**：
 ```markdown
@@ -68,7 +68,25 @@ ai-dev-workflow/
 
 ---
 
-## 步骤 3：生成 ARCHITECTURE.md 和 TECH_STACK.md
+## 步骤 3：初始化 CodeGraph 代码索引
+
+**目的**：让 AI 用 `codegraph_explore` 一次调用获取相关符号源码与调用链，替代 grep+Read 循环；步骤 4 扫描项目结构生成 ARCHITECTURE.md 时也更高效。
+
+**触发条件**（**全部**满足才执行，缺一即跳过）：
+1. 当前 shell 中 `codegraph` 命令可用（`command -v codegraph` 成功）
+2. 项目根目录不存在 `.codegraph/` 目录（尚未初始化）
+
+**执行**：在项目根目录运行 `codegraph init`。
+
+**注意**：
+- 初始化耗时取决于代码库规模；若 Bash 工具默认超时（120s），改用后台运行或加大 timeout
+- 索引建立后立即生效，无需重启会话
+- `codegraph init` 失败不阻塞初始化流程，记录后继续，可稍后手动重试
+- 索引建立后，日常代码查询优先使用 CodeGraph（`codegraph_explore`），而非 grep/find
+
+---
+
+## 步骤 4：生成 ARCHITECTURE.md 和 TECH_STACK.md
 
 **ARCHITECTURE.md**：
 - 扫描项目目录结构（排除 node_modules、.git、build 等）
@@ -82,7 +100,7 @@ ai-dev-workflow/
 
 ---
 
-## 步骤 4：创建 BOOTSTRAP.md（导航地图）
+## 步骤 5：创建 BOOTSTRAP.md（导航地图）
 
 ```markdown
 # AI 开发工作流
@@ -123,7 +141,7 @@ ai-dev-workflow/
 
 ---
 
-## 步骤 5：写入 CLAUDE.md 自动钩子
+## 步骤 6：写入 CLAUDE.md 自动钩子
 
 **目的**：让新上下文窗口无需手动声明 skill，自动检测并启用 ai-dev-workflow。
 
